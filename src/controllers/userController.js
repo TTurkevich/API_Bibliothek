@@ -3,7 +3,7 @@ const User = require("../models/userModel");
 const { getPostData } = require("../utils");
 
 // @desc    Gets All Users
-// @route   GET /api/users
+// @route   GET /users
 async function getUsers(req, res) {
   try {
     const users = await User.findAll();
@@ -15,26 +15,8 @@ async function getUsers(req, res) {
   }
 }
 
-// @desc    Gets Single User
-// @route   GET /api/users/:id
-async function getUser(req, res, id) {
-  try {
-    const user = await User.findById(id);
-
-    if (!user) {
-      res.writeHead(404, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ message: "User Not Found" }));
-    } else {
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(user));
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 // @desc    Create a User
-// @route   POST /api/users
+// @route   POST /users
 async function createUser(req, res) {
   try {
     const body = await getPostData(req);
@@ -54,10 +36,30 @@ async function createUser(req, res) {
   }
 }
 
-// @desc    Update a User
-// @route   PUT /api/users/:id
-async function updateUser(req, res, id) {
+// @desc    Gets Single User
+// @route   GET /users/?id=
+async function getUser(req, res, url) {
   try {
+    const id = url.split("id=")[1];
+    const user = await User.findById(id);
+
+    if (!user) {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "User Not Found" }));
+    } else {
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(user));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+// @desc    Update a User
+// @route   PUT /users/?id=
+async function updateUser(req, res, url) {
+  try {
+    const id = url.split("id=")[1];
     const user = await User.findById(id);
 
     if (!user) {
@@ -83,9 +85,10 @@ async function updateUser(req, res, id) {
 }
 
 // @desc    Delete User
-// @route   DELETE /api/users/:id
-async function deleteUser(req, res, id) {
+// @route   DELETE /users/?id=
+async function deleteUser(req, res, url) {
   try {
+    const id = url.split("id=")[1];
     const user = await User.findById(id);
 
     if (!user) {
@@ -101,29 +104,10 @@ async function deleteUser(req, res, id) {
   }
 }
 
-// @desc    Gets Single User
-// @route   GET /api/users/?name
-async function getUserByName(req, res, name) {
-  try {
-    const user = await User.findByName(name);
-
-    if (!user) {
-      res.writeHead(404, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ message: "User Not Found" }));
-    } else {
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(user));
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 module.exports = {
   getUsers,
   getUser,
   createUser,
   updateUser,
   deleteUser,
-  getUserByName,
 };

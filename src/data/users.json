@@ -1,5 +1,27 @@
 [
-  { "id": "1", "name": "Ivan" },
+  {
+    "id": "1",
+    "name": "Ivan",
+    "books": [
+      { "id": "1", "name": "update name", "author": "Фримен, Робсон" },
+      {
+        "id": "2",
+        "name": "JavaScript для чайников",
+        "author": "Минник, Холланд"
+      },
+      { "id": "3", "name": "Как устроен JavaScript", "author": "Д. Крокфорд" },
+      {
+        "id": "4",
+        "name": "Изучаем JavaScript. Руководство по созданию современных веб-сайтов",
+        "author": "Э. Браун"
+      },
+      {
+        "id": "2",
+        "name": "JavaScript для чайников",
+        "author": "Минник, Холланд"
+      }
+    ]
+  },
   {
     "id": "2",
     "name": "Katya",

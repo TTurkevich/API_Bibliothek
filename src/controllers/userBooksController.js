@@ -1,12 +1,12 @@
 const UserBooks = require("../models/userBooksModel");
-
 const { getPostData } = require("../utils");
 
 // @desc    Gets All User Books
-// @route   GET /api/users/?name=name&books
-async function getUserBooks(req, res, name) {
+// @route   GET /users/?id=id&books
+async function getUserBooks(req, res, url) {
   try {
-    const userBooks = await UserBooks.findAllUserBooks(name);
+    const id = url.replace(/[^0-9]/g, "");
+    const userBooks = await UserBooks.findAllUserBooks(id);
 
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(userBooks));
@@ -16,10 +16,12 @@ async function getUserBooks(req, res, name) {
 }
 
 // @desc    Gets Single User book
-// @route   GET /api/users/?name=name&books=id
-async function getUserBookById(req, res, name, id) {
+// @route   GET /users/?id=id&books=id
+async function getUserBookById(req, res, url) {
   try {
-    const userBooks = await UserBooks.findUserBookById(name, id);
+    const [route, search] = url.split("id=");
+    const [idUser, idBook] = search.split("&books=");
+    const userBooks = await UserBooks.findUserBookById(idUser, idBook);
 
     if (!userBooks) {
       res.writeHead(404, { "Content-Type": "application/json" });
@@ -34,10 +36,12 @@ async function getUserBookById(req, res, name, id) {
 }
 
 // @desc    Update a User Books
-// @route   POST /api/users/?name=name&books=id
-async function updateUserBooks(req, res, name, id) {
+// @route   POST /users/?id=id&books=id
+async function updateUserBooks(req, res, url) {
   try {
-    const userBooks = await UserBooks.addBook(name, id);
+    const [route, search] = url.split("id=");
+    const [idUser, idBook] = search.split("&books=");
+    const userBooks = await UserBooks.addBook(idUser, idBook);
 
     if (!userBooks) {
       res.writeHead(404, { "Content-Type": "application/json" });
@@ -52,18 +56,20 @@ async function updateUserBooks(req, res, name, id) {
 }
 
 // @desc    Delete User Book
-// @route   DELETE /api/users/?name=name&books=id
-async function deleteUserBook(req, res, name, id) {
+// @route   DELETE /users/?id=id&books=id
+async function deleteUserBook(req, res, url) {
   try {
-    const userBook = await UserBooks.findUserBookById(name, id);
+    const [route, search] = url.split("id=");
+    const [idUser, idBook] = search.split("&books=");
+    const userBook = await UserBooks.findUserBookById(idUser, idBook);
 
     if (!userBook) {
       res.writeHead(404, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ message: "Book Not Found" }));
     } else {
-      await UserBooks.removeBook(name, id);
+      await UserBooks.removeBook(idUser, idBook);
       res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify({ message: `Book ${id} removed` }));
+      res.end(JSON.stringify({ message: `Book ${idBook} removed` }));
     }
   } catch (error) {
     console.log(error);

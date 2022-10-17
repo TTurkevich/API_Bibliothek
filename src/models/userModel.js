@@ -1,5 +1,5 @@
 let users = require("../data/users.json");
-const { v4: uuidv4 } = require("uuid");
+const { newId } = require("../helpers");
 
 const { writeDataToFile } = require("../utils");
 
@@ -25,7 +25,7 @@ function findByName(name) {
 
 function create(user) {
   return new Promise((resolve, reject) => {
-    const newUser = { id: uuidv4(), ...user };
+    const newUser = { id: newId(), ...user };
     users.push(newUser);
     writeDataToFile("./src/data/users.json", users);
     resolve(newUser);

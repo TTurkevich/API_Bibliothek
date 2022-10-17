@@ -1,5 +1,5 @@
 let books = require("../data/books.json");
-const { v4: uuidv4 } = require("uuid");
+const { newId } = require("../helpers");
 
 const { writeDataToFile } = require("../utils");
 
@@ -18,7 +18,7 @@ function findById(id) {
 
 function create(book) {
   return new Promise((resolve, reject) => {
-    const newBook = { id: uuidv4(), ...book };
+    const newBook = { id: newId(), ...book };
     books.push(newBook);
     writeDataToFile("./src/data/books.json", books);
     resolve(newBook);

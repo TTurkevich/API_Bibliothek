@@ -3,7 +3,7 @@ const Book = require("../models/bookModel");
 const { getPostData } = require("../utils");
 
 // @desc    Gets All Books
-// @route   GET /api/books
+// @route   GET /books
 async function getBooks(req, res) {
   try {
     const books = await Book.findAll();
@@ -16,9 +16,10 @@ async function getBooks(req, res) {
 }
 
 // @desc    Gets Single Book
-// @route   GET /api/books/:id
-async function getBook(req, res, id) {
+// @route   GET /books/?id=
+async function getBook(req, res, url) {
   try {
+    const id = url.split("id=")[1];
     const book = await Book.findById(id);
 
     if (!book) {
@@ -34,7 +35,7 @@ async function getBook(req, res, id) {
 }
 
 // @desc    Create a Book
-// @route   POST /api/books
+// @route   POST /books
 async function createBook(req, res) {
   try {
     const body = await getPostData(req);
@@ -56,9 +57,10 @@ async function createBook(req, res) {
 }
 
 // @desc    Update a Book
-// @route   PUT /api/books/:id
-async function updateBook(req, res, id) {
+// @route   PUT /books/?id=
+async function updateBook(req, res, url) {
   try {
+    const id = url.split("id=")[1];
     const book = await Book.findById(id);
 
     if (!book) {
@@ -85,9 +87,10 @@ async function updateBook(req, res, id) {
 }
 
 // @desc    Delete Book
-// @route   DELETE /api/book/:id
-async function deleteBook(req, res, id) {
+// @route   DELETE /books/?id=
+async function deleteBook(req, res, url) {
   try {
+    const id = url.split("id=")[1];
     const book = await Book.findById(id);
 
     if (!book) {
