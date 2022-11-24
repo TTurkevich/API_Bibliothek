@@ -5,6 +5,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const usersRoute = require("./routes/users");
 const booksRoute = require("./routes/books");
+const loggerReqURL = require("./middlewares/loggerReqURL");
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
+app.use(loggerReqURL);
 app.use("/users", usersRoute);
 app.use("/books", booksRoute);
 
